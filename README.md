@@ -1,6 +1,7 @@
 # item-display-vanilla-skybox
 Minecraft vanilla skybox based on item display
 
+https://discord.gg/cRSPVRFT
 
 **Fragment Shader (`rendertype_item_entity_translucent_cull.fsh`)**
 - Detects items with alpha value 254 in their texture
