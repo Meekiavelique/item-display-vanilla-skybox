@@ -1,23 +1,19 @@
-#version 150
+#version 330
 
 #moj_import <minecraft:fog.glsl>
-// based on https://www.shadertoy.com/view/4tdSWr
-uniform sampler2D Sampler0;
-uniform vec4 ColorModulator;
-uniform float FogStart;
-uniform float FogEnd;
-uniform vec4 FogColor;
-uniform mat4 ModelViewMat;
-uniform mat4 ProjMat;
-uniform float GameTime;
+#moj_import <minecraft:dynamictransforms.glsl>
 
-in float vertexDistance;
+uniform sampler2D Sampler0;
+
+in float sphericalVertexDistance;
+in float cylindricalVertexDistance;
 in vec4 vertexColor;
 in vec2 texCoord0;
 in vec2 texCoord1;
 in vec3 vertexPosition;
 
 out vec4 fragColor;
+uniform float GameTime;
 
 #define ALPHA_EFFECT(a) if(isTextureAlpha(a))
 
@@ -125,7 +121,6 @@ vec3 getMinecraftSkyWithClouds(vec3 rayDir) {
     
     f = cloudcover + cloudalpha * f * r;
     
-
     float cloudMask = smoothstep(0.15, 0.5, rayDir.y); 
     f *= cloudMask;
     c *= cloudMask;
@@ -150,5 +145,5 @@ void main() {
         discard;
     }
     
-    fragColor = linear_fog(color, vertexDistance, FogStart, FogEnd, FogColor);
+    fragColor = apply_fog(color, sphericalVertexDistance, cylindricalVertexDistance, FogEnvironmentalStart, FogEnvironmentalEnd, FogRenderDistanceStart, FogRenderDistanceEnd, FogColor);
 }
